@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"content-collections watch\" \"next dev\"",
-    "build": "content-collections build && next build",
+    "build": "content-collections build && NEXT_PRIVATE_MAX_WORKER_THREADS=2 next build",
     "start": "next start",
     "lint": "biome check --write .",
     "lint:fix": "biome check --fix --unsafe .",
