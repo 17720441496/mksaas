@@ -20,10 +20,17 @@
   ],
   // Minification helps to keep the Worker bundle size down and improve start up time.
   "minify": true,
+
+  // https://developers.cloudflare.com/workers/wrangler/configuration/#top-level-only-keys
+  // Whether Wrangler should keep variables configured in the dashboard on deploy
+  "keep_vars": true,
+
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets"
   },
+
+  // https://developers.cloudflare.com/workers/wrangler/configuration/#observability
   "observability": {
     "enabled": true
   },
@@ -32,7 +39,7 @@
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
    */
-  "placement": { "mode": "smart" },
+  // "placement": { "mode": "smart" },
 
   /**
    * Bindings
@@ -40,6 +47,19 @@
    * databases, object storage, AI inference, real-time communication and more.
    * https://developers.cloudflare.com/workers/runtime-apis/bindings/
    */
+
+  /**
+   * Hyperdrive
+   * https://opennext.js.org/cloudflare/howtos/db#hyperdrive-example
+   * https://developers.cloudflare.com/workers/tutorials/postgres/#8-use-hyperdrive-to-accelerate-queries
+   */
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "8ba4508b28cf42f987f3533c1f09433c",
+      "localConnectionString": "postgresql://postgres:postgres@localhost:5432/mksaas-template"
+    }
+  ],
 
   /**
    * Environment Variables

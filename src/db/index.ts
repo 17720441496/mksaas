@@ -2,17 +2,23 @@
  * Connect to PostgreSQL Database (Supabase/Neon/Local PostgreSQL)
  * https://orm.drizzle.team/docs/tutorials/drizzle-with-supabase
  */
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
 import * as schema from './schema';
 
 let db: ReturnType<typeof drizzle> | null = null;
 
+// https://opennext.js.org/cloudflare/howtos/db#postgresql
 export async function getDb() {
   if (db) return db;
-  const connectionString = process.env.DATABASE_URL!;
-  const client = postgres(connectionString, { prepare: false });
-  db = drizzle(client, { schema });
+  const { env } = await getCloudflareContext({ async: true });
+  const pool = new Pool({
+    connectionString: env.HYPERDRIVE.connectionString,
+    // You don't want to reuse the same connection for multiple requests
+    maxUses: 1,
+  });
+  db = drizzle({ client: pool, schema });
   return db;
 }
 
