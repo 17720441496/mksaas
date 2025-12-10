@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
 
   /* config options here */
   devIndicators: false,
+  
+  // Increase memory limit for Node.js
+  env: {
+    NODE_OPTIONS: '--max-old-space-size=4096',
+  },
 
   // https://nextjs.org/docs/architecture/nextjs-compiler#remove-console
   // Remove all console.* calls in production only

@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "cf-dev": "next dev -p 8787",
-    "build": "next build",
+    "build": "fumadocs-mdx && next build",
     "start": "next start",
-    "postinstall": "fumadocs-mdx",
+    "postinstall": "echo 'Skipping fumadocs-mdx in postinstall'", // Skip during install to avoid EPIPE error
     "lint": "biome check --write .",
     "lint:fix": "biome check --fix --unsafe .",
     "format": "biome format --write .",
