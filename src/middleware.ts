@@ -27,7 +27,7 @@ const intlMiddleware = createMiddleware(routing);
  * In Next.js middleware, it's recommended to only check for the existence of a session cookie
  * to handle redirection. To avoid blocking requests by making API or database calls.
  */
-export default async function proxy(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const { nextUrl } = req;
   console.log('>> middleware start, pathname', nextUrl.pathname);
 

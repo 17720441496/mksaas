@@ -11,8 +11,6 @@ const nextConfig: NextConfig = {
 
   /* config options here */
   devIndicators: false,
-  
-
 
   // https://nextjs.org/docs/architecture/nextjs-compiler#remove-console
   // Remove all console.* calls in production only
