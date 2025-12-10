@@ -1,0 +1,473 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from "react";
+import { motion, Link } from "framer-motion";
+import ArtCategorySlider from "../../../components/custom/ArtCategorySlider";
+import HeroSection from "../../../components/custom/HeroSection";
+import InteractiveCircle from "../../../components/custom/InteractiveCircle";
+import Footer from "../../../components/layout/Footer";
+import { useCart } from "../../../components/custom/CartProvider";
+import ZodiacSection from "../../../components/custom/ZodiacSection";
+import ContactSection from "../../../components/custom/ContactSection";
+
+const artCategories = [
+  {
+    id: 1,
+    title: "动物系列",
+    imageUrl: "/maiganhua/1.jpg",
+    description: "栩栩如生的动物形象，展现麦秆画的细腻工艺",
+    color: "#FF6B6B",
+  },
+  {
+    id: 2,
+    title: "人物系列",
+    imageUrl: "/maiganhua/2.jpg",
+    description: "生动的人物肖像，传递丰富的情感与文化内涵",
+    color: "#4ECDC4",
+  },
+  {
+    id: 3,
+    title: "风景系列",
+    imageUrl: "/maiganhua/3.jpg",
+    description: "壮丽的自然景观，呈现麦秆画的独特艺术魅力",
+    color: "#45B7D1",
+  },
+  {
+    id: 4,
+    title: "花卉系列",
+    imageUrl: "/maiganhua/4.jpg",
+    description: "绚丽的花卉图案，展现麦秆画的优雅与精致",
+    color: "#96CEB4",
+  },
+  {
+    id: 5,
+    title: "十二生肖",
+    imageUrl: "/maiganhua/5.jpg",
+    description: "传统十二生肖主题，融合现代艺术表现手法",
+    color: "#FECA57",
+  },
+];
+
+const WheatStrawArtPage = () => {
+  const [loading, setLoading] = useState(true);
+  const { cart, addToCart } = useCart();
+  const circleRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleCategoryClick = (category: string) => {
+    console.log(`Clicked category: ${category}`);
+  };
+
+  const wheatStrawArtworks = [
+    {
+      id: 1,
+      title: "龙腾盛世",
+      price: 1888.00,
+      sales: 120,
+      imageUrl: "/maiganhua/long.jpg",
+    },
+    {
+      id: 2,
+      title: "花开富贵",
+      price: 1688.00,
+      sales: 95,
+      imageUrl: "/maiganhua/14.png",
+    },
+    {
+      id: 3,
+      title: "百鸟朝凤",
+      price: 2288.00,
+      sales: 68,
+      imageUrl: "/maiganhua/15.png",
+    },
+  ];
+
+  const zodiacs = [
+    {
+      id: "rat",
+      name: "鼠",
+      image: "/maiganhua/shengxiao/rat.png",
+      description: "聪明伶俐，机智过人",
+      price: 888,
+      yearRange: "1948, 1960, 1972, 1984, 1996, 2008, 2020",
+    },
+    {
+      id: "ox",
+      name: "牛",
+      image: "/maiganhua/shengxiao/ox.png",
+      description: "勤劳踏实，任劳任怨",
+      price: 888,
+      yearRange: "1949, 1961, 1973, 1985, 1997, 2009, 2021",
+    },
+    {
+      id: "tiger",
+      name: "虎",
+      image: "/maiganhua/shengxiao/tiger.png",
+      description: "勇猛精进，威风凛凛",
+      price: 888,
+      yearRange: "1950, 1962, 1974, 1986, 1998, 2010, 2022",
+    },
+    {
+      id: "rabbit",
+      name: "兔",
+      image: "/maiganhua/shengxiao/rabbit.png",
+      description: "温柔可爱，机智灵敏",
+      price: 888,
+      yearRange: "1951, 1963, 1975, 1987, 1999, 2011, 2023",
+    },
+    {
+      id: "dragon",
+      name: "龙",
+      image: "/maiganhua/shengxiao/dragon.png",
+      description: "威武霸气，祥瑞之兆",
+      price: 888,
+      yearRange: "1952, 1964, 1976, 1988, 2000, 2012, 2024",
+    },
+    {
+      id: "snake",
+      name: "蛇",
+      image: "/maiganhua/shengxiao/snake.png",
+      description: "灵活多变，神秘莫测",
+      price: 888,
+      yearRange: "1953, 1965, 1977, 1989, 2001, 2013, 2025",
+    },
+    {
+      id: "horse",
+      name: "马",
+      image: "/maiganhua/shengxiao/horse.png",
+      description: "勇往直前，奔腾不息",
+      price: 888,
+      yearRange: "1954, 1966, 1978, 1990, 2002, 2014, 2026",
+    },
+    {
+      id: "goat",
+      name: "羊",
+      image: "/maiganhua/shengxiao/goat.png",
+      description: "温顺善良，吉祥如意",
+      price: 888,
+      yearRange: "1955, 1967, 1979, 1991, 2003, 2015, 2027",
+    },
+    {
+      id: "monkey",
+      name: "猴",
+      image: "/maiganhua/shengxiao/monkey.png",
+      description: "聪明活泼，机智过人",
+      price: 888,
+      yearRange: "1956, 1968, 1980, 1992, 2004, 2016, 2028",
+    },
+    {
+      id: "rooster",
+      name: "鸡",
+      image: "/maiganhua/shengxiao/rooster.png",
+      description: "勤奋努力，一鸣惊人",
+      price: 888,
+      yearRange: "1957, 1969, 1981, 1993, 2005, 2017, 2029",
+    },
+    {
+      id: "dog",
+      name: "狗",
+      image: "/maiganhua/shengxiao/dog.png",
+      description: "忠诚勇敢，守护家园",
+      price: 888,
+      yearRange: "1958, 1970, 1982, 1994, 2006, 2018, 2030",
+    },
+    {
+      id: "pig",
+      name: "猪",
+      image: "/maiganhua/shengxiao/pig.png",
+      description: "憨厚可爱，福气满满",
+      price: 888,
+      yearRange: "1959, 1971, 1983, 1995, 2007, 2019, 2031",
+    },
+  ];
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-[#f8f4e3]">
+        <div className="text-2xl font-bold text-[#3a0c0c]">加载中...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f8f4e3]">
+      <HeroSection />
+
+      <main className="container mx-auto px-4 py-8">
+        {/* 艺术分类滑块 */}
+        <section className="mb-12">
+          <ArtCategorySlider categories={artCategories} onCategoryClick={handleCategoryClick} />
+        </section>
+
+        {/* 作品展示区域 */}
+        <section className="py-16 px-4 bg-gray-50 max-w-7xl mx-auto">
+              <div className="text-center text-lg font-semibold text-gray-600 mb-2">精选作品</div>
+              <h2 className="text-center text-3xl font-bold text-gray-800 mb-10">麦秆画作品展示</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {/* 龙腾盛世 */}
+              <div>
+                <span className="bg-yellow-500 text-white text-sm px-3 py-1 rounded-full inline-block mb-2">热门推荐</span>
+                <h3 className="text-xl font-medium text-gray-800 mb-2">龙腾盛世</h3>
+                <p className="text-lg font-bold text-red-500 mb-1">¥1,888.00</p>
+                <p className="text-sm text-gray-500 mb-3">销量: 120</p>
+                <button className="w-full bg-[#3a0c0c] text-white py-2 rounded-lg hover:bg-[#4a1c1c] transition-colors duration-300">
+                  加入购物车
+                </button>
+              </div>
+            </div>
+
+            {/* 主要内容区域 */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+                {/* 左侧图片网格 */}
+                <motion.div
+                  className="md:col-span-2 grid grid-cols-2 gap-6"
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true }}
+                >
+                  {/* 第一行 */}
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="relative overflow-hidden aspect-square group">
+                      <img
+                        src="/maiganhua/shouye2.jpg"
+                        alt="shouye2"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-30 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <h3 className="text-xl font-bold mb-2">精美麦秆画作品</h3>
+                        <p className="text-sm">传统工艺与现代艺术的完美结合</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="relative overflow-hidden aspect-square group">
+                      <img
+                        src="/maiganhua/shouye1.jpg"
+                        alt="shouye1"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-30 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <h3 className="text-xl font-bold mb-2">传统工艺</h3>
+                        <p className="text-sm">传承千年的手工技艺</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  {/* 第二行 */}
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="relative overflow-hidden aspect-square group">
+                      <img
+                        src="/maiganhua/18.jpg"
+                        alt="maiganhua18"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-30 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <h3 className="text-xl font-bold mb-2">精致细节</h3>
+                        <p className="text-sm">每一处都彰显匠人的用心</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="relative overflow-hidden aspect-square group">
+                      <img
+                        src="/maiganhua/16.png"
+                        alt="maiganhua16"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-30 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <h3 className="text-xl font-bold mb-2">艺术价值</h3>
+                        <p className="text-sm">具有收藏价值的艺术作品</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+                
+                {/* 右侧文本内容 */}
+                <motion.div
+                  className="md:col-span-1 flex flex-col justify-center text-center md:text-left"
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  <div className="bg-white p-8 rounded-lg shadow-md">
+                    <h2 className="text-3xl font-bold text-[#3a0c0c] mb-6">麦秆画艺术</h2>
+                    <p className="text-lg text-gray-700 mb-4">
+                      麦秆画是中国传统的民间艺术形式，起源于隋唐时期，已有千年历史。它以麦秆为原料，经过选料、染色、剪裁、粘贴等多道工序精心制作而成。
+                    </p>
+                    <p className="text-lg text-gray-700 mb-4">
+                      麦秆画具有独特的艺术魅力，它不仅保留了麦秆的自然光泽和纹理，还通过巧妙的构图和精湛的技艺，展现出丰富的色彩和立体感。
+                    </p>
+                    <p className="text-lg text-gray-700 mb-6">
+                      每一幅麦秆画都是匠人心血的结晶，具有很高的艺术价值和收藏价值。它不仅是一种装饰品，更是一种文化传承和艺术表达。
+                    </p>
+                    <Link
+                      href="/wheat-straw-art/collection"
+                      className="inline-block px-6 py-3 bg-[#3a0c0c] text-white rounded-lg hover:bg-[#4a1c1c] transition-colors duration-300"
+                    >
+                      了解更多
+                    </Link>
+                  </div>
+                </motion.div>
+              </div>
+        </section>
+
+        {/* 交互性日冕展区 */}
+        <section className="py-16 px-4">
+          <div className="max-w-7xl mx-auto">
+            <div ref={circleRef} className="relative">
+              <InteractiveCircle />
+            </div>
+          </div>
+        </section>
+
+        {/* 十二生肖作品展区 */}
+        <section className="py-16 px-4 bg-[#f8f4e3]">
+          <ZodiacSection zodiacs={zodiacs} onAddToCart={addToCart} />
+        </section>
+
+        {/* 服务特色模块 */}
+        <section className="py-16 px-4 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-[#3a0c0c] mb-4">我们的服务</h2>
+              <div className="w-24 h-1 bg-[#3a0c0c] mx-auto"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* 个性化定制 */}
+              <motion.div
+                className="bg-[#f8f4e3] p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-4xl mb-4">🎨</div>
+                <h3 className="text-xl font-bold text-[#3a0c0c] mb-3">个性化定制</h3>
+                <Link href="/custom-order" className="text-[#3a0c0c] hover:underline mb-3 inline-block">
+                  了解定制服务
+                </Link>
+                <p className="text-gray-700">
+                  根据您的需求，量身定制独一无二的麦秆画作品，为您的生活增添艺术气息。
+                </p>
+              </motion.div>
+              
+              {/* DIY材料包 */}
+              <motion.div
+                className="bg-[#f8f4e3] p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-4xl mb-4">📦</div>
+                <h3 className="text-xl font-bold text-[#3a0c0c] mb-3">DIY材料包</h3>
+                <Link href="/diy-kits" className="text-[#3a0c0c] hover:underline mb-3 inline-block">
+                  查看材料包
+                </Link>
+                <p className="text-gray-700">
+                  提供齐全的DIY材料和详细的制作教程，让您亲手体验麦秆画的创作乐趣。
+                </p>
+              </motion.div>
+              
+              {/* 非遗证书 */}
+              <motion.div
+                className="bg-[#f8f4e3] p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-4xl mb-4">🏆</div>
+                <h3 className="text-xl font-bold text-[#3a0c0c] mb-3">非遗证书</h3>
+                <Link href="/about-us" className="text-[#3a0c0c] hover:underline mb-3 inline-block">
+                  了解非遗认证
+                </Link>
+                <p className="text-gray-700">
+                  所有作品均由非遗传承人制作，附带权威非遗证书，具有很高的收藏价值。
+                </p>
+              </motion.div>
+              
+              {/* 专业包装配送 */}
+              <motion.div
+                className="bg-[#f8f4e3] p-8 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <div className="text-4xl mb-4">🚚</div>
+                <h3 className="text-xl font-bold text-[#3a0c0c] mb-3">专业包装配送</h3>
+                <Link href="/shipping" className="text-[#3a0c0c] hover:underline mb-3 inline-block">
+                  查看配送政策
+                </Link>
+                <p className="text-gray-700">
+                  采用专业的包装材料和配送方式，确保您的作品安全送达，让您购物无忧。
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* 联系我们 */}
+        <section className="py-16 px-4 bg-[#3a0c0c]">
+          <ContactSection />
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

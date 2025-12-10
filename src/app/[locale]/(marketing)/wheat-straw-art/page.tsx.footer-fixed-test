@@ -1,0 +1,16 @@
+'use client';
+
+import React from "react";
+import { Footer } from "@/components/layout/footer";
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个测试页面，用于检查修复后的Footer组件的导入。</p>
+      <Footer />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

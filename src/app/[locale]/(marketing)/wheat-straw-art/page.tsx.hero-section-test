@@ -1,0 +1,35 @@
+'use client'
+
+import React from 'react'
+import { Footer } from '@/components/layout/footer';
+import HeroSection from '@/components/custom/HeroSection'
+
+// 麦秆画英雄区图片数据
+const heroImages = [
+  {
+    id: 1,
+    src: '/wheat-straw-art/hero-1.jpg',
+    alt: '精美的麦秆画作品'
+  },
+  {
+    id: 2,
+    src: '/wheat-straw-art/hero-2.jpg',
+    alt: '麦秆画制作工艺'
+  },
+  {
+    id: 3,
+    src: '/wheat-straw-art/hero-3.jpg',
+    alt: '传统麦秆画艺术'
+  }
+]
+
+const WheatStrawArtPage = () => {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <HeroSection images={heroImages} />
+      <Footer />
+    </div>
+  )
+}
+
+export default WheatStrawArtPage

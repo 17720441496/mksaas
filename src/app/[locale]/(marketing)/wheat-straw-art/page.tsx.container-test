@@ -1,0 +1,15 @@
+'use client';
+
+import React from "react";
+import Container from "@/components/layout/container";
+
+const WheatStrawArtPage = () => {
+  return (
+    <Container>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个测试页面，用于检查Container组件的导入。</p>
+    </Container>
+  );
+};
+
+export default WheatStrawArtPage;

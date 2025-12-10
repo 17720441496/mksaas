@@ -1,0 +1,467 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from "react";
+import { motion, Link } from "framer-motion";
+import ArtCategorySlider from "@/components/custom/ArtCategorySlider";
+import HeroSection from "@/components/custom/HeroSection";
+import InteractiveCircle from "@/components/custom/InteractiveCircle";
+import { Footer } from "@/components/layout/Footer";
+import { useCart } from "@/components/custom/CartProvider";
+import ZodiacSection from "@/components/custom/ZodiacSection";
+import ContactSection from "@/components/custom/ContactSection";
+
+const artCategories = [
+  { id: "1", title: "动物系列", imageUrl: "/maiganhua/1.jpg", description: "栩栩如生的动物形象，展现麦秆画的细腻工艺", color: "#FF6B6B" },
+  { id: "2", title: "人物系列", imageUrl: "/maiganhua/2.jpg", description: "生动的人物刻画，传递传统文化的魅力", color: "#4ECDC4" },
+  { id: "3", title: "风景系列", imageUrl: "/maiganhua/3.jpg", description: "美丽的自然风景，让人仿佛置身其中", color: "#45B7D1" },
+  { id: "4", title: "花卉系列", imageUrl: "/maiganhua/4.jpg", description: "精致的花卉图案，展现麦秆画的柔美", color: "#FFA07A" },
+  { id: "5", title: "十二生肖", imageUrl: "/maiganhua/5.jpg", description: "传统十二生肖，各具特色", color: "#98D8C8" }
+];
+
+const wheatStrawArtworks = [
+  {
+    id: 1,
+    title: "龙腾盛世",
+    description: "精选优质麦秆，纯手工制作的龙腾盛世图，展现中华龙的威严与力量",
+    price: 2888,
+    images: [
+      { id: 1, src: "/maiganhua/long1.jpg", alt: "龙腾盛世-1" },
+      { id: 2, src: "/maiganhua/long2.jpg", alt: "龙腾盛世-2" },
+      { id: 3, src: "/maiganhua/long3.jpg", alt: "龙腾盛世-3" },
+      { id: 4, src: "/maiganhua/long4.jpg", alt: "龙腾盛世-4" }
+    ],
+    category: "动物系列",
+    material: "优质麦秆",
+    size: "120cm × 60cm",
+    weight: "约1.5kg",
+    packaging: "精美礼盒包装"
+  },
+  {
+    id: 2,
+    title: "花开富贵",
+    description: "以牡丹花为主题，象征富贵吉祥，是家居装饰的理想选择",
+    price: 1688,
+    images: [
+      { id: 1, src: "/maiganhua/f1.jpg", alt: "花开富贵-1" },
+      { id: 2, src: "/maiganhua/f2.jpg", alt: "花开富贵-2" }
+    ],
+    category: "花卉系列",
+    material: "优质麦秆",
+    size: "80cm × 50cm",
+    weight: "约1kg",
+    packaging: "精美礼盒包装"
+  },
+  {
+    id: 3,
+    title: "马到成功",
+    description: "奔腾的骏马，象征事业有成，是馈赠亲友的佳品",
+    price: 1988,
+    images: [
+      { id: 1, src: "/maiganhua/ma1.jpg", alt: "马到成功-1" },
+      { id: 2, src: "/maiganhua/ma2.jpg", alt: "马到成功-2" }
+    ],
+    category: "动物系列",
+    material: "优质麦秆",
+    size: "90cm × 50cm",
+    weight: "约1.2kg",
+    packaging: "精美礼盒包装"
+  }
+];
+
+const zodiacs = [
+  { id: "1", name: "鼠", imageUrl: "/maiganhua/shu.jpg", description: "机智灵活，聪明过人" },
+  { id: "2", name: "牛", imageUrl: "/maiganhua/niu.jpg", description: "勤劳肯干，脚踏实地" },
+  { id: "3", name: "虎", imageUrl: "/maiganhua/hu.jpg", description: "勇猛无畏，威震四方" },
+  { id: "4", name: "兔", imageUrl: "/maiganhua/tu.jpg", description: "温柔可爱，活泼开朗" },
+  { id: "5", name: "龙", imageUrl: "/maiganhua/long.jpg", description: "气势磅礴，呼风唤雨" },
+  { id: "6", name: "蛇", imageUrl: "/maiganhua/she.jpg", description: "神秘莫测，灵活敏捷" },
+  { id: "7", name: "马", imageUrl: "/maiganhua/ma.jpg", description: "奔腾不息，勇往直前" },
+  { id: "8", name: "羊", imageUrl: "/maiganhua/yang.jpg", description: "温顺善良，吉祥如意" },
+  { id: "9", name: "猴", imageUrl: "/maiganhua/hou.jpg", description: "聪明伶俐，机智过人" },
+  { id: "10", name: "鸡", imageUrl: "/maiganhua/ji.jpg", description: "勤劳守信，吉祥如意" },
+  { id: "11", name: "狗", imageUrl: "/maiganhua/gou.jpg", description: "忠诚可靠，守护家园" },
+  { id: "12", name: "猪", imageUrl: "/maiganhua/zhu.jpg", description: "憨厚可爱，福运绵长" }
+];
+
+const WheatStrawArtPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<string>("动物系列");
+  const [viewedImages, setViewedImages] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+  const [enlargedImageSrc, setEnlargedImageSrc] = useState<string | null>(null);
+  const [selectedArtwork, setSelectedArtwork] = useState(wheatStrawArtworks[0]);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hoveredImageIndex, setHoveredImageIndex] = useState<number | null>(null);
+
+  const { addToCart } = useCart();
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const mainContentRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  // 模拟加载过程
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 处理分类点击
+  const handleCategoryClick = (categoryName: string) => {
+    setActiveCategory(categoryName);
+  };
+
+  // 处理图片点击，显示详情
+  const handleImageClick = (imageSrc: string, index: number) => {
+    setCurrentImageIndex(index);
+    setShowModal(true);
+    
+    // 如果图片不在已查看列表中，添加进去
+    if (!viewedImages.includes(imageSrc)) {
+      setViewedImages(prev => [...prev, imageSrc]);
+    }
+  };
+
+  // 关闭图片详情模态框
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // 处理产品点击，显示产品详情
+  const handleArtworkClick = (artwork: typeof wheatStrawArtworks[0]) => {
+    setSelectedArtwork(artwork);
+    setShowProductModal(true);
+  };
+
+  // 关闭产品详情模态框
+  const closeProductModal = () => {
+    setShowProductModal(false);
+  };
+
+  // 处理添加到购物车
+  const handleAddToCart = () => {
+    addToCart(selectedArtwork);
+    // 可以在这里添加一个提示，说明商品已添加到购物车
+  };
+
+  // 滚动动画效果
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-fade-in");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const elements = document.querySelectorAll(".animate-on-scroll");
+    elements.forEach((element) => observer.observe(element));
+
+    return () => elements.forEach((element) => observer.unobserve(element));
+  }, []);
+
+  // 模拟数据：英雄区图片
+  const heroImages = [
+    { id: 1, src: "/maiganhua/long1.jpg", alt: "龙腾盛世麦秆画" },
+    { id: 2, src: "/maiganhua/f1.jpg", alt: "花开富贵麦秆画" },
+    { id: 3, src: "/maiganhua/ma1.jpg", alt: "马到成功麦秆画" },
+    { id: 4, src: "/maiganhua/hu.jpg", alt: "虎虎生威麦秆画" }
+  ];
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-[#f9f6f0] z-50">
+        <div className="text-center">
+          <div className="w-24 h-24 border-4 border-[#d4af37] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#3a0c0c] text-lg font-semibold">正在加载...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f9f6f0]">
+      {/* 英雄区 */}
+      <div ref={heroRef} className="relative overflow-hidden">
+        <HeroSection images={heroImages} />
+      </div>
+
+      {/* 艺术分类滑块 */}
+      <section ref={(el) => (sectionRefs.current[0] = el)} className="animate-on-scroll py-16 px-4">
+        <ArtCategorySlider categories={artCategories} />
+      </section>
+
+      {/* 主要内容区 */}
+      <main ref={mainContentRef} className="py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* 精选作品展示 */}
+          <div className="mb-20">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold text-[#3a0c0c] mb-3">精选作品</h2>
+              <div className="w-20 h-1 bg-[#d4af37] mx-auto"></div>
+            </div>
+
+            {/* 作品卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {wheatStrawArtworks.map((artwork, index) => (
+                <motion.div
+                  key={artwork.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.2 }}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  onClick={() => handleArtworkClick(artwork)}
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <motion.img
+                      src={artwork.images[0].src}
+                      alt={artwork.title}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end">
+                      <div className="p-4 text-white">
+                        <h3 className="text-xl font-bold">{artwork.title}</h3>
+                        <p className="text-lg">{artwork.price} 元</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-bold text-[#3a0c0c] mb-2">{artwork.title}</h3>
+                    <p className="text-gray-600 mb-4 line-clamp-2">{artwork.description}</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xl font-bold text-[#d4af37]">{artwork.price} 元</span>
+                      <button
+                        className="bg-[#3a0c0c] text-white px-4 py-2 rounded hover:bg-[#5a1c1c] transition-colors duration-300"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart();
+                        }}
+                      >
+                        加入购物车
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* 主要内容区 - 图片展示 */}
+          <div className="mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="relative">
+                  <motion.img
+                    src="/maiganhua/long1.jpg"
+                    alt="麦秆画艺术"
+                    className="w-full h-auto"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="bg-white rounded-lg shadow-lg p-6"
+                >
+                  <h3 className="text-2xl font-bold text-[#3a0c0c] mb-3">麦秆画的历史与传承</h3>
+                  <p className="text-gray-600">
+                    麦秆画起源于隋唐时期，已有千年历史。它是一种以麦秆为原料，经过选料、染色、剪贴、熨烫等多道工序制作而成的传统民间艺术。麦秆画题材广泛，包括人物、动物、风景、花卉等，具有很高的艺术价值和收藏价值。
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="bg-white rounded-lg shadow-lg p-6"
+                >
+                  <h3 className="text-2xl font-bold text-[#3a0c0c] mb-3">麦秆画的制作工艺</h3>
+                  <ul className="text-gray-600 space-y-2">
+                    <li className="flex items-start">
+                      <span className="text-[#d4af37] mr-2">•</span>
+                      <span>选料：精选优质麦秆，要求色泽均匀，韧性好</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-[#d4af37] mr-2">•</span>
+                      <span>染色：采用天然染料，色彩鲜艳持久</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-[#d4af37] mr-2">•</span>
+                      <span>剪贴：根据设计图案，将麦秆剪成不同形状</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-[#d4af37] mr-2">•</span>
+                      <span>熨烫：通过熨烫使麦秆定型，增加立体感</span>
+                    </li>
+                  </ul>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+
+          {/* 主要内容区 - 图片网格 */}
+          <div className="mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="md:col-span-2 relative overflow-hidden rounded-lg shadow-lg"
+              >
+                <div className="relative">
+                  <img
+                    src="/maiganhua/long2.jpg"
+                    alt="精美麦秆画作品"
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-6 text-white">
+                      <h3 className="text-2xl font-bold mb-2">龙腾盛世</h3>
+                      <p>精选优质麦秆，纯手工制作的龙腾盛世图，展现中华龙的威严与力量</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="space-y-6"
+              >
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <img
+                    src="/maiganhua/f2.jpg"
+                    alt="传统工艺"
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4 text-white">
+                      <h3 className="text-xl font-bold">传统工艺</h3>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <img
+                    src="/maiganhua/ma2.jpg"
+                    alt="精致细节"
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4 text-white">
+                      <h3 className="text-xl font-bold">精致细节</h3>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* 主要内容区 - 第二行图片网格 */}
+          <div className="mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="space-y-6"
+              >
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <img
+                    src="/maiganhua/shu.jpg"
+                    alt="十二生肖系列"
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4 text-white">
+                      <h3 className="text-xl font-bold">十二生肖</h3>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative overflow-hidden rounded-lg shadow-lg">
+                  <img
+                    src="/maiganhua/hou.jpg"
+                    alt="生肖猴"
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4 text-white">
+                      <h3 className="text-xl font-bold">生肖猴</h3>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                className="md:col-span-2 relative overflow-hidden rounded-lg shadow-lg"
+              >
+                <div className="relative">
+                  <img
+                    src="/maiganhua/long4.jpg"
+                    alt="麦秆画艺术展示"
+                    className="w-full h-auto"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-6 text-white">
+                      <h3 className="text-2xl font-bold mb-2">艺术展示</h3>
+                      <p>麦秆画以其独特的艺术魅力，成为中国传统民间艺术的瑰宝</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* 十二生肖展示 */}
+      <section ref={(el) => (sectionRefs.current[1] = el)} className="animate-on-scroll py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-[#3a0c0c] mb-3">十二生肖系列</h2>
+            <div className="w-20 h-1 bg-[#d4af37] mx-auto mb-4"></div>
+            <p className="text-gray-600 max-w-3xl mx-auto">
+              十二生肖是中国传统文化的重要组成部分，我们的麦秆画十二生肖系列，将传统生肖文化与现代工艺完美结合，每一幅作品都栩栩如生，充满灵气。
+            </p>
+          </div>
+
+          <ZodiacSection zodiacs={zodiacs} />
+        </div>
+      </section>
+
+      {/* 联系我们 */}
+      <section ref={(el) => (sectionRefs.current[2] = el)} className="animate-on-scroll py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <ContactSection />
+        </div>
+      </section>
+
+      {/* 页脚 */}
+      <Footer />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

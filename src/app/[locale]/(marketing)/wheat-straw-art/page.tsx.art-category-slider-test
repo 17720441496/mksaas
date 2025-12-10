@@ -1,0 +1,26 @@
+'use client';
+
+import React from "react";
+import { Footer } from "@/components/layout/footer";
+import ArtCategorySlider from "@/components/custom/ArtCategorySlider";
+
+const artCategories = [
+  { name: "花鸟鱼虫", image: "/maiganhua/huaniao.jpg", link: "/categories/huaniao" },
+  { name: "人物肖像", image: "/maiganhua/renwu.jpg", link: "/categories/renwu" },
+  { name: "动物世界", image: "/maiganhua/dongwu.jpg", link: "/categories/dongwu" },
+  { name: "山水画", image: "/maiganhua/shanshui.jpg", link: "/categories/shanshui" },
+  { name: "民俗风情", image: "/maiganhua/minzu.jpg", link: "/categories/minzu" },
+  { name: "现代艺术", image: "/maiganhua/xiandai.jpg", link: "/categories/xiandai" },
+];
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <ArtCategorySlider categories={artCategories} />
+      <Footer />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

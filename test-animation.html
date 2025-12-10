@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试背景动画</title>
+    <style>
+        @keyframes slideLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        .container {
+            width: 800px;
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 auto;
+            border: 2px solid #333;
+        }
+        .animate-slide-left {
+            animation: slideLeft 5s linear infinite;
+            width: 200%;
+            height: 100%;
+            background-image: url('/maiganhua/jingxuan/qingming.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">背景动画测试</h1>
+    <div class="container">
+        <div class="animate-slide-left"></div>
+    </div>
+</body>
+</html>

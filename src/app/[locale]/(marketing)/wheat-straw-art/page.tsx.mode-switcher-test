@@ -1,0 +1,16 @@
+'use client';
+
+import React from "react";
+import { ModeSwitcherHorizontal } from "@/components/layout/mode-switcher-horizontal";
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个测试页面，用于检查ModeSwitcherHorizontal组件的导入。</p>
+      <ModeSwitcherHorizontal />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

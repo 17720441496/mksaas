@@ -1,0 +1,16 @@
+'use client';
+
+import React from "react";
+import { Footer } from "@/components/layout/Footer";
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个简化版的页面</p>
+      <Footer />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

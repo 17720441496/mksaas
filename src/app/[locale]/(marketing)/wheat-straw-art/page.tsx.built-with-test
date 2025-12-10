@@ -1,0 +1,16 @@
+'use client';
+
+import React from "react";
+import BuiltWithButton from "@/components/shared/built-with-button";
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个测试页面，用于检查BuiltWithButton组件的导入。</p>
+      <BuiltWithButton />
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景图片动画测试</title>
+    <style>
+        /* 设置容器样式 */
+        .animated-background {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            background-image: url('/maiganhua/jingxuan/qingming.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: slideLeft 20s linear infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 定义从右到左的动画 */
+        @keyframes slideLeft {
+            0% {
+                background-position-x: 100%;
+            }
+            100% {
+                background-position-x: 0%;
+            }
+        }
+
+        /* 辅助样式 */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="animated-background"></div>
+    </div>
+</body>
+</html>

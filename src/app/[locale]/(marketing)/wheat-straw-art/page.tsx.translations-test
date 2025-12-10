@@ -1,0 +1,17 @@
+'use client';
+
+import React from "react";
+import { useTranslations } from "next-intl";
+
+const WheatStrawArtPage = () => {
+  const t = useTranslations();
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个测试页面，用于检查useTranslations钩子的导入。</p>
+      <p>测试翻译: {t('Metadata.name')}</p>
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

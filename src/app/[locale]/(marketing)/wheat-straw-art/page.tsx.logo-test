@@ -1,0 +1,16 @@
+'use client';
+
+import React from "react";
+import { Logo } from "@/components/layout/logo";
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <Logo />
+      <h1>麦秆画艺术</h1>
+      <p>这是一个测试页面，用于检查Logo组件的导入。</p>
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;

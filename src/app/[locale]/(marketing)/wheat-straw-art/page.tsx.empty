@@ -1,0 +1,14 @@
+'use client';
+
+import React from "react";
+
+const WheatStrawArtPage = () => {
+  return (
+    <div>
+      <h1>麦秆画艺术</h1>
+      <p>这是一个极简页面，不导入任何组件。</p>
+    </div>
+  );
+};
+
+export default WheatStrawArtPage;
