@@ -5,5 +5,5 @@
     }
   },
   "installCommand": "npm install",
-  "buildCommand": "NODE_ENV=production DEBUG=* npm run build"
+  "buildCommand": "npm run generate-mdx && npm run build-next"
 }
