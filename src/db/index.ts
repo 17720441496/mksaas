@@ -2,7 +2,6 @@
  * Connect to PostgreSQL Database (Supabase/Neon/Local PostgreSQL)
  * https://orm.drizzle.team/docs/tutorials/drizzle-with-supabase
  */
-import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import * as schema from './schema';
@@ -12,12 +11,27 @@ let db: ReturnType<typeof drizzle> | null = null;
 // https://opennext.js.org/cloudflare/howtos/db#postgresql
 export async function getDb() {
   if (db) return db;
-  const { env } = await getCloudflareContext({ async: true });
+  
+  let connectionString: string;
+  
+  // Prioritize DATABASE_URL for local development and standard deployments
+  if (process.env.DATABASE_URL) {
+    connectionString = process.env.DATABASE_URL;
+  } else if (process.env.NEXT_RUNTIME === 'edge') {
+    // Only use Cloudflare Hyperdrive in edge runtime
+    const { getCloudflareContext } = await import('@opennextjs/cloudflare');
+    const { env } = await getCloudflareContext({ async: true });
+    connectionString = env.HYPERDRIVE.connectionString;
+  } else {
+    throw new Error('DATABASE_URL environment variable is not set');
+  }
+  
   const pool = new Pool({
-    connectionString: env.HYPERDRIVE.connectionString,
+    connectionString,
     // You don't want to reuse the same connection for multiple requests
     maxUses: 1,
   });
+  
   db = drizzle({ client: pool, schema });
   return db;
 }

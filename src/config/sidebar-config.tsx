@@ -10,8 +10,10 @@ import {
   CreditCardIcon,
   LayoutDashboardIcon,
   LockKeyholeIcon,
+  PackageIcon,
   Settings2Icon,
   SettingsIcon,
+  ShoppingCartIcon,
   UsersRoundIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -49,6 +51,12 @@ export function useSidebarLinks(): NestedMenuItem[] {
           title: t('admin.users.title'),
           icon: <UsersRoundIcon className="size-4 shrink-0" />,
           href: Routes.AdminUsers,
+          external: false,
+        },
+        {
+          title: t('admin.orders.title'),
+          icon: <ShoppingCartIcon className="size-4 shrink-0" />,
+          href: Routes.AdminOrders,
           external: false,
         },
       ],

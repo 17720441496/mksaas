@@ -1,8 +1,10 @@
 import { ChartAreaInteractive } from '@/components/dashboard/chart-area-interactive';
 import { DashboardHeader } from '@/components/dashboard/dashboard-header';
-import { DataTable } from '@/components/dashboard/data-table';
 import { SectionCards } from '@/components/dashboard/section-cards';
-import { useTranslations } from 'next-intl';
+import { getSession } from '@/lib/server';
+import { redirect } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
+import type { Locale } from 'next-intl';
 
 import data from './data.json';
 
@@ -11,9 +13,24 @@ import data from './data.json';
  *
  * NOTICE: This is a demo page for the dashboard, no real data is used,
  * we will show real data in the future
+ * 
+ * For users with role 'user', redirect to orders page
+ * For users with role 'admin', show the dashboard
  */
-export default function DashboardPage() {
-  const t = useTranslations();
+export default async function DashboardPage({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const session = await getSession();
+  
+  // If user role is 'user', redirect to orders page
+  if (session?.user?.role === 'user') {
+    redirect(`/${locale}/orders`);
+  }
+
+  const t = await getTranslations();
 
   const breadcrumbs = [
     {
@@ -33,7 +50,7 @@ export default function DashboardPage() {
             <div className="px-4 lg:px-6">
               <ChartAreaInteractive />
             </div>
-            <DataTable data={data} />
+            
           </div>
         </div>
       </div>

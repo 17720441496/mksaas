@@ -75,9 +75,6 @@ export function DashboardSidebar({
         {/* Only show UI components when not in loading state */}
         {!isPending && mounted && (
           <>
-            {/* show upgrade card if user is not a member, and sidebar is not collapsed */}
-            {currentUser && state !== 'collapsed' && <UpgradeCard />}
-
             {/* show user profile if user is logged in */}
             {currentUser && <SidebarUser user={currentUser} />}
           </>

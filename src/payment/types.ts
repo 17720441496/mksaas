@@ -21,14 +21,15 @@ export enum PaymentTypes {
 }
 
 /**
- * Payment scene (lifetime, credit, subscription)
+ * Payment scene (lifetime, credit, subscription, physical_product)
  */
-export type PaymentScene = PaymentScenes.LIFETIME | PaymentScenes.CREDIT | PaymentScenes.SUBSCRIPTION;
+export type PaymentScene = PaymentScenes.LIFETIME | PaymentScenes.CREDIT | PaymentScenes.SUBSCRIPTION | PaymentScenes.PHYSICAL_PRODUCT;
 
 export enum PaymentScenes {
   LIFETIME = 'lifetime',      // Lifetime plan purchase
   CREDIT = 'credit',          // Credit package purchase
   SUBSCRIPTION = 'subscription', // Regular subscription
+  PHYSICAL_PRODUCT = 'physical_product', // Physical product purchase (e.g., wheat straw painting)
 }
 
 /**

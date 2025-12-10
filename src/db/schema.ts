@@ -1,4 +1,4 @@
-import { boolean, integer, pgTable, text, timestamp, index } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp, index, numeric } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -122,4 +122,79 @@ export const creditTransaction = pgTable("credit_transaction", {
 }, (table) => ({
 	creditTransactionUserIdIdx: index("credit_transaction_user_id_idx").on(table.userId),
 	creditTransactionTypeIdx: index("credit_transaction_type_idx").on(table.type),
+}));
+
+export const productOption = pgTable("product_option", {
+	id: text("id").primaryKey(),
+	category: text("category").notNull(), // 'size', 'frame', 'mounting'
+	name: text("name").notNull(),
+	nameZh: text("name_zh").notNull(),
+	description: text("description"),
+	descriptionZh: text("description_zh"),
+	priceAdjustment: integer("price_adjustment").notNull().default(0), // price adjustment in cents
+	sortOrder: integer("sort_order").notNull().default(0),
+	enabled: boolean("enabled").notNull().default(true),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+	productOptionCategoryIdx: index("product_option_category_idx").on(table.category),
+	productOptionEnabledIdx: index("product_option_enabled_idx").on(table.enabled),
+}));
+
+export const wheatStrawOrder = pgTable("wheat_straw_order", {
+	id: text("id").primaryKey(),
+	orderNumber: text("order_number").notNull().unique(),
+	userId: text("user_id").notNull().references(() => user.id, { onDelete: 'cascade' }),
+	status: text("status").notNull().default('pending'), // 'pending', 'paid', 'in_production', 'shipped', 'completed', 'cancelled'
+	
+	// Image information
+	originalImageUrl: text("original_image_url"),
+	generatedImageUrl: text("generated_image_url").notNull(),
+	prompt: text("prompt"),
+	
+	// Product configuration
+	sizeOptionId: text("size_option_id").references(() => productOption.id),
+	frameOptionId: text("frame_option_id").references(() => productOption.id),
+	mountingOptionId: text("mounting_option_id").references(() => productOption.id),
+	
+	// Pricing
+	basePrice: integer("base_price").notNull(), // base price in cents
+	totalPrice: integer("total_price").notNull(), // total price in cents
+	currency: text("currency").notNull().default('USD'),
+	
+	// Shipping address
+	recipientName: text("recipient_name").notNull(),
+	recipientPhone: text("recipient_phone").notNull(),
+	shippingAddress: text("shipping_address").notNull(),
+	shippingCity: text("shipping_city").notNull(),
+	shippingProvince: text("shipping_province").notNull(),
+	shippingPostalCode: text("shipping_postal_code"),
+	shippingCountry: text("shipping_country").notNull().default('CN'),
+	
+	// Shipping information
+	shippingCompany: text("shipping_company"),
+	trackingNumber: text("tracking_number"),
+	
+	// Payment information
+	paymentId: text("payment_id").references(() => payment.id),
+	sessionId: text("session_id"),
+	
+	// Notes
+	customerNote: text("customer_note"),
+	adminNote: text("admin_note"),
+	
+	// Timestamps
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	paidAt: timestamp("paid_at"),
+	inProductionAt: timestamp("in_production_at"),
+	shippedAt: timestamp("shipped_at"),
+	completedAt: timestamp("completed_at"),
+	cancelledAt: timestamp("cancelled_at"),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
+}, (table) => ({
+	wheatStrawOrderUserIdIdx: index("wheat_straw_order_user_id_idx").on(table.userId),
+	wheatStrawOrderStatusIdx: index("wheat_straw_order_status_idx").on(table.status),
+	wheatStrawOrderNumberIdx: index("wheat_straw_order_number_idx").on(table.orderNumber),
+	wheatStrawOrderPaymentIdIdx: index("wheat_straw_order_payment_id_idx").on(table.paymentId),
+	wheatStrawOrderCreatedAtIdx: index("wheat_straw_order_created_at_idx").on(table.createdAt),
 }));

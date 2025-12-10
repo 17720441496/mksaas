@@ -75,19 +75,38 @@ export function SidebarUser({ user, className }: SidebarUserProps) {
   const showLocaleSwitch = LOCALES.length > 1;
 
   const handleSignOut = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          console.log('sign out success');
-          // TanStack Query automatically handles cache invalidation on sign out
-          router.replace('/');
+    try {
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            console.log('sign out success');
+            // TanStack Query automatically handles cache invalidation on sign out
+            router.replace('/');
+          },
+          onError: (error) => {
+            // Check if it's the expected "Failed to get session" error
+            // This is normal when the session is already invalid/expired
+            const isSessionError = 
+              error?.error?.code === 'FAILED_TO_GET_SESSION' ||
+              error?.code === 'FAILED_TO_GET_SESSION' ||
+              error?.error?.message?.includes('Failed to get session');
+            
+            if (!isSessionError) {
+              // Only log and show error for unexpected errors
+              console.error('sign out error:', error);
+              toast.error(t('Common.logoutFailed'));
+            }
+            // Always redirect to home page after sign out attempt
+            router.replace('/');
+          },
         },
-        onError: (error) => {
-          console.error('sign out error:', error);
-          toast.error(t('Common.logoutFailed'));
-        },
-      },
-    });
+      });
+    } catch (error) {
+      // Handle any unexpected errors
+      console.error('Unexpected sign out error:', error);
+      // Still redirect to home page
+      router.replace('/');
+    }
   };
 
   return (

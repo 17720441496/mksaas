@@ -8,7 +8,7 @@ import {
 import { getCreditPackageById } from '@/credits/server';
 import { CREDIT_TRANSACTION_TYPE } from '@/credits/types';
 import { getDb } from '@/db';
-import { payment, user } from '@/db/schema';
+import { payment, user, wheatStrawOrder } from '@/db/schema';
 import type { Payment } from '@/db/types';
 import {
   PAYMENT_RECORD_RETRY_ATTEMPTS,
@@ -783,8 +783,12 @@ export class StripeProvider implements PaymentProvider {
         );
         const metadata = session.metadata || {};
         const isCreditPurchase = metadata.type === 'credit_purchase';
+        const isPhysicalProduct = metadata.scene === 'physical_product';
 
-        if (isCreditPurchase) {
+        if (isPhysicalProduct) {
+          // Process physical product purchase (e.g., wheat straw painting)
+          await this.processPhysicalProductPurchase(invoice, paymentRecord, metadata);
+        } else if (isCreditPurchase) {
           // Process credit purchase
           await this.processCreditPurchase(invoice, paymentRecord, metadata);
         } else {
@@ -840,6 +844,52 @@ export class StripeProvider implements PaymentProvider {
     });
 
     console.log('<< Process credit purchase success');
+  }
+
+  /**
+   * Process physical product purchase (e.g., wheat straw painting)
+   * @param invoice Stripe invoice
+   * @param paymentRecord Payment record
+   * @param metadata Checkout session metadata
+   */
+  private async processPhysicalProductPurchase(
+    invoice: Stripe.Invoice,
+    paymentRecord: Payment,
+    metadata: { [key: string]: string }
+  ): Promise<void> {
+    console.log('>> Process physical product purchase');
+
+    const orderId = metadata.orderId;
+    if (!orderId) {
+      console.warn('<< Missing orderId in metadata');
+      return;
+    }
+
+    try {
+      const db = await getDb();
+      
+      // Update wheat straw order status to 'paid'
+      await db
+        .update(wheatStrawOrder)
+        .set({
+          status: 'paid',
+          paymentId: paymentRecord.id,
+          paidAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(wheatStrawOrder.id, orderId));
+
+      console.log('Updated wheat straw order status to paid:', orderId);
+
+      // TODO: Send order confirmation email
+      // This will be implemented in the email templates step
+
+    } catch (error) {
+      console.error('Error processing physical product purchase:', error);
+      throw error;
+    }
+
+    console.log('<< Process physical product purchase success');
   }
 
   /**
@@ -1122,9 +1172,12 @@ export class StripeProvider implements PaymentProvider {
     // Determine payment scene based on metadata
     const metadata = session.metadata || {};
     const isCreditPurchase = metadata.type === 'credit_purchase';
-    const scene = isCreditPurchase
-      ? PaymentScenes.CREDIT
-      : PaymentScenes.LIFETIME;
+    const isPhysicalProduct = metadata.scene === 'physical_product';
+    const scene = isPhysicalProduct
+      ? PaymentScenes.PHYSICAL_PRODUCT
+      : isCreditPurchase
+        ? PaymentScenes.CREDIT
+        : PaymentScenes.LIFETIME;
 
     // Create one-time payment record with proper status and paid=false
     const db = await getDb();

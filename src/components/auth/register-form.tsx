@@ -146,8 +146,17 @@ export const RegisterForm = ({
         },
         onSuccess: (ctx) => {
           // sign up success, user information stored in ctx.data
-          // console.log("register, success:", ctx.data);
-          setSuccess(t('checkEmail'));
+          console.log("register, success:", ctx.data);
+          
+          // Since requireEmailVerification is set to false in auth.ts,
+          // users should be automatically logged in after registration
+          // Display success message and redirect
+          setSuccess(t('success'));
+          
+          // Redirect to callback URL after a short delay
+          setTimeout(() => {
+            window.location.href = callbackUrl;
+          }, 1500);
 
           // add affonso affiliate
           // https://affonso.io/app/affiliate-program/connect

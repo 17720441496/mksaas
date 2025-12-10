@@ -237,6 +237,7 @@
       "password": "Password",
       "signUp": "Sign Up",
       "signInHint": "Already have an account? Sign in",
+      "success": "Registration successful! Redirecting...",
       "checkEmail": "Please check your email inbox",
       "showPassword": "Show password",
       "hidePassword": "Hide password",
@@ -542,6 +543,34 @@
           "error": "Failed to unban user"
         },
         "close": "Close"
+      },
+      "orders": {
+        "title": "Orders"
+      },
+      "productOptions": {
+        "title": "Product Options"
+      }
+    },
+    "sectionCards": {
+      "totalRevenue": {
+        "description": "Total Revenue",
+        "trending": "Trending up this month",
+        "footer": "Visitors for the last 6 months"
+      },
+      "newCustomers": {
+        "description": "New Customers",
+        "trending": "Down 20% this period",
+        "footer": "Acquisition needs attention"
+      },
+      "activeAccounts": {
+        "description": "Active Accounts",
+        "trending": "Strong user retention",
+        "footer": "Engagement exceed targets"
+      },
+      "growthRate": {
+        "description": "Growth Rate",
+        "trending": "Steady performance increase",
+        "footer": "Meets growth projections"
       }
     },
     "settings": {
@@ -787,6 +816,19 @@
   "HomePage": {
     "title": "MkSaaS",
     "description": "Make AI SaaS in days, simply and effortlessly",
+    "wheatStrawHero": {
+      "badge": "AI-Powered Traditional Art",
+      "title": "Create Beautiful Wheat Straw Paintings with AI",
+      "description": "Transform your ideas into stunning traditional Chinese wheat straw paintings using cutting-edge AI technology. Handcrafted and delivered to your door.",
+      "cta": "Start Creating",
+      "viewPricing": "View Pricing",
+      "feature1Title": "AI Design",
+      "feature1Desc": "Generate unique wheat straw painting designs with AI",
+      "feature2Title": "Fast Production",
+      "feature2Desc": "Professional handcrafted production within days",
+      "feature3Title": "Worldwide Delivery",
+      "feature3Desc": "Secure packaging and reliable shipping"
+    },
     "hero": {
       "title": "Make AI SaaS in days, simply and effortlessly",
       "description": "The is a demo website built with MkSaaS, a Next.js SaaS boilerplate to help you build your AI SaaS faster and better.",
@@ -1094,5 +1136,48 @@
   "AIAudioPage": {
     "title": "AI Audio",
     "description": "MkSaaS lets you make AI SaaS in days, simply and effortlessly"
+  },
+  "WheatStraw": {
+    "pageTitle": "Wheat Straw Painting AI Generator",
+    "pageDescription": "Create traditional Chinese wheat straw painting art with AI"
+  },
+  "Orders": {
+    "myOrders": "My Orders",
+    "viewYourOrders": "View and track your wheat straw painting orders",
+    "errorLoadingOrders": "Error loading orders",
+    "noOrders": "No Orders Yet",
+    "noOrdersDescription": "You haven't placed any orders yet",
+    "createYourFirst": "Create Your First Painting",
+    "orderNumber": "Order",
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid",
+      "in_production": "In Production",
+      "shipped": "Shipped",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "size": "Size",
+    "frame": "Frame",
+    "mounting": "Mounting",
+    "total": "Total",
+    "tracking": "Tracking",
+    "viewDetails": "View Details",
+    "backToOrders": "Back to Orders",
+    "placed": "Placed on",
+    "orderTimeline": "Order Timeline",
+    "orderPlaced": "Order Placed",
+    "paymentConfirmed": "Payment Confirmed",
+    "inProduction": "In Production",
+    "shipped": "Shipped",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "carrier": "Carrier",
+    "productDetails": "Product Details",
+    "design": "Design",
+    "yourNote": "Your Note",
+    "shippingAddress": "Shipping Address",
+    "priceSummary": "Price Summary",
+    "basePrice": "Base Price"
   }
 }

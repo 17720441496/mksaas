@@ -21,12 +21,23 @@ const nextConfig: NextConfig = {
   // https://github.com/vercel/next.js/discussions/50177#discussioncomment-6006702
   // fix build error: Module build failed: UnhandledSchemeError:
   // Reading from "cloudflare:sockets" is not handled by plugins (Unhandled scheme).
-  webpack: (config, { webpack }) => {
+  webpack: (config, { webpack, isServer }) => {
     config.plugins.push(
       new webpack.IgnorePlugin({
         resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
       })
     );
+    
+    // Handle node: protocol for crypto and other built-in modules
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        stream: false,
+        buffer: false,
+      };
+    }
+    
     return config;
   },
 
@@ -84,7 +95,9 @@ const withMDX = createMDX();
 export default withMDX(withNextIntl(nextConfig));
 
 // https://opennext.js.org/cloudflare/get-started#12-develop-locally
-import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
-
-// during local development, to access in any of your server code, local versions of Cloudflare bindings
-initOpenNextCloudflareForDev();
+// Only initialize Cloudflare dev bindings if explicitly enabled
+if (process.env.ENABLE_CLOUDFLARE_DEV === 'true') {
+  import('@opennextjs/cloudflare').then(({ initOpenNextCloudflareForDev }) => {
+    initOpenNextCloudflareForDev();
+  });
+}

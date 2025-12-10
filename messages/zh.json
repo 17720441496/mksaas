@@ -237,6 +237,7 @@
       "password": "密码",
       "signUp": "注册",
       "signInHint": "已经有账号？登录",
+      "success": "注册成功！正在跳转...",
       "checkEmail": "请检查您的邮箱",
       "showPassword": "显示密码",
       "hidePassword": "隐藏密码",
@@ -542,6 +543,34 @@
           "error": "解除封禁失败"
         },
         "close": "关闭"
+      },
+      "orders": {
+        "title": "订单管理"
+      },
+      "productOptions": {
+        "title": "产品规格管理"
+      }
+    },
+    "sectionCards": {
+      "totalRevenue": {
+        "description": "总收入",
+        "trending": "本月趋势上升",
+        "footer": "过去6个月的访问者"
+      },
+      "newCustomers": {
+        "description": "新客户",
+        "trending": "本周期下降20%",
+        "footer": "获客需要关注"
+      },
+      "activeAccounts": {
+        "description": "活跃账户",
+        "trending": "用户留存强劲",
+        "footer": "参与度超过目标"
+      },
+      "growthRate": {
+        "description": "增长率",
+        "trending": "稳定增长",
+        "footer": "符合增长预期"
       }
     },
     "settings": {
@@ -787,6 +816,19 @@
   "HomePage": {
     "title": "MkSaaS",
     "description": "使用 MkSaaS 在几天内轻松构建您的 AI SaaS 产品",
+    "wheatStrawHero": {
+      "badge": "AI 赋能传统艺术",
+      "title": "用 AI 创作精美的麦秆画",
+      "description": "使用前沿 AI 技术，将您的创意转化为精美的传统中国麦秆画。手工制作，送货上门。",
+      "cta": "开始创作",
+      "viewPricing": "查看价格",
+      "feature1Title": "AI 设计",
+      "feature1Desc": "使用 AI 生成独特的麦秆画设计",
+      "feature2Title": "快速制作",
+      "feature2Desc": "专业手工制作，数天内完成",
+      "feature3Title": "全球配送",
+      "feature3Desc": "安全包装，可靠物流"
+    },
     "hero": {
       "title": "使用 MkSaaS 轻松构建您的 AI SaaS 产品",
       "description": "MkSaaS 是构建 AI SaaS 的最佳模板，内置 AI、身份验证、全球支付、博客、文档、邮件订阅、SEO、多彩主题、丰富组件等。",
@@ -1094,5 +1136,48 @@
   "AIAudioPage": {
     "title": "AI 音频",
     "description": "MkSaaS 让您在几天内轻松构建您的 AI SaaS，简单且毫不费力"
+  },
+  "WheatStraw": {
+    "pageTitle": "麦秆画 AI 生成器",
+    "pageDescription": "使用 AI 创作传统中国麦秆画艺术作品"
+  },
+  "Orders": {
+    "myOrders": "我的订单",
+    "viewYourOrders": "查看并追踪您的麦秆画订单",
+    "errorLoadingOrders": "加载订单时出错",
+    "noOrders": "暂无订单",
+    "noOrdersDescription": "您还没有下过任何订单",
+    "createYourFirst": "创建您的第一幅作品",
+    "orderNumber": "订单",
+    "status": {
+      "pending": "待支付",
+      "paid": "已支付",
+      "in_production": "制作中",
+      "shipped": "已发货",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "size": "尺寸",
+    "frame": "边框",
+    "mounting": "装裱",
+    "total": "总计",
+    "tracking": "物流单号",
+    "viewDetails": "查看详情",
+    "backToOrders": "返回订单列表",
+    "placed": "下单于",
+    "orderTimeline": "订单进度",
+    "orderPlaced": "订单创建",
+    "paymentConfirmed": "支付确认",
+    "inProduction": "开始制作",
+    "shipped": "已发货",
+    "completed": "订单完成",
+    "cancelled": "订单取消",
+    "carrier": "快递公司",
+    "productDetails": "产品详情",
+    "design": "设计描述",
+    "yourNote": "您的备注",
+    "shippingAddress": "收货地址",
+    "priceSummary": "价格明细",
+    "basePrice": "基础价格"
   }
 }

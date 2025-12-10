@@ -110,11 +110,18 @@ export function useImageGeneration(): UseImageGenerationReturn {
             `Successful image response [provider=${provider}, modelId=${modelId}, elapsed=${elapsed}ms]`
           );
 
+          // Convert base64 to data URL if needed
+          const imageUrl = data.image
+            ? data.image.startsWith('data:') || data.image.startsWith('http')
+              ? data.image
+              : `data:image/png;base64,${data.image}`
+            : null;
+
           // Update image in state
           setImages((prevImages) =>
             prevImages.map((item) =>
               item.provider === provider
-                ? { ...item, image: data.image ?? null, modelId }
+                ? { ...item, image: imageUrl, modelId }
                 : item
             )
           );
